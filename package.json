@@ -1,16 +1,15 @@
 {
   "scripts": {
     "commit": "git-cz",
-    "release": "standard-version"
+    "release": "conventional-changelog -p angular -i CHANGELOG.md -s && git push"
   },
   "config": {
     "commitizen": {
       "path": "node_modules/cz-conventional-changelog"
     }
   },
-  "devDependencies": {
+  "dependencies": {
     "commitizen": "^4.0.3",
-    "cz-conventional-changelog": "^3.1.0",
-    "standard-version": "^7.1.0"
+    "conventional-changelog-cli": "^2.0.31"
   }
 }
