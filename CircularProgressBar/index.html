@@ -1,54 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>svg</title>
-</head>
-<style type="text/css">
-	.backline {
-		stroke: #eee;
-	}
-	.outline {
-		stroke: #ef613e;
-		stroke-linecap: round;
-		/* 添加过渡效果 */
-		transition: stroke-dashoffset .2s;
-		/* SVG circle strokeDashoffset 默认以中心，右边作为起始刻度，因此需要旋转90度 */
-		transform: rotate(-90deg);
-		transform-origin: center;
-	}
-</style>
-<body>
-	<svg viewBox="0 0 120 120" width="120" height="120">
-		<circle class="backline" cx="60" cy="60" r="50" fill="transparent" stroke-width="10"  />
-		<circle class="outline" cx="60" cy="60" r="50" fill="transparent" stroke-width="10"  />
+  <head>
+    <meta charset="UTF-8" />
+    <title>svg</title>
+  </head>
+  <style type="text/css">
+    .backline {
+      stroke: #eee;
+    }
+    .outline {
+      stroke: #ef613e;
+      stroke-linecap: round;
+      /* 添加过渡效果 */
+      transition: stroke-dashoffset 0.2s;
+      /* SVG circle strokeDashoffset 默认以中心，右边作为起始刻度，因此需要旋转90度 */
+      transform: rotate(-90deg);
+      transform-origin: center;
+    }
+  </style>
+  <body>
+    <svg viewBox="0 0 120 120" width="120" height="120">
+      <circle
+        class="backline"
+        cx="60"
+        cy="60"
+        r="50"
+        fill="transparent"
+        stroke-width="10"
+      />
+      <circle
+        class="outline"
+        cx="60"
+        cy="60"
+        r="50"
+        fill="transparent"
+        stroke-width="10"
+      />
 	</svg>
-</body>
+  </body>
 
-<script type="text/javascript">
-	;(function() {
-		const circle = document.querySelector('.outline')
-		// 获取半径
-		const radius = circle.r.baseVal.value
-		const perimeter = radius * Math.PI * 2
-		circle.style.strokeDasharray = `${perimeter} ${perimeter}`
-		circle.style.strokeDashoffset = perimeter
-		let percent = 0
-		let timer = null
-		function update () {
-			if (timer) {
-				clearTimeout(timer)
-			}
-			// 100 作为一个周期，每个周期多等待一会
-			const delay = percent % 100 === 0 ? 80 : 40
-			timer = setTimeout(() => {
-				const change = (1 - percent/100) * perimeter
-				circle.style.strokeDashoffset = change
-				percent += 1
-				update()
-			}, delay)
-		}
-		update()
-	})()
-</script>
+  <!-- 执行原生JavaScript -->
+  <script type="text/javascript">
+    ;(function () {
+      const circle = document.querySelector(".outline")
+      // 获取半径
+      const radius = circle.r.baseVal.value
+      const perimeter = radius * Math.PI * 2
+      circle.style.strokeDasharray = `${perimeter} ${perimeter}`
+      circle.style.strokeDashoffset = perimeter
+      let percent = 0
+      let timer = null
+      function update() {
+        if (timer) {
+          clearTimeout(timer)
+        }
+        // 100 作为一个周期，每个周期多等待一会
+        const delay = percent % 100 === 0 ? 80 : 40
+        timer = setTimeout(() => {
+          const change = (1 - percent / 100) * perimeter
+          circle.style.strokeDashoffset = change
+          percent += 1
+          update()
+        }, delay)
+      }
+      update()
+    })()
+  </script>
 </html>
