@@ -1,0 +1,12 @@
+// in order to enable hover effect
+.cell-copy-btn {
+  text-align: left;
+  font-size: 12px;
+  padding: 0;
+  color: #495060;
+  &:hover {
+    color: #1890ff;
+    font-weight: bold;
+    transform: scale(1.2);
+  }
+}
