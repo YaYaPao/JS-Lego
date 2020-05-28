@@ -1,4 +1,5 @@
 import { Tooltip, Button, Icon, Popconfirm, Tag } from "ant-design-vue"
+import moment from "moment"
 import "./index.scss"
 
 /**
@@ -7,12 +8,11 @@ import "./index.scss"
  * @param {Function} callback if a button, trigger onclick event
  * @param {Any} extra extra data to render cell, depends on type
  */
-export function CellRender (target, type, callback, extra) {
-  /**
-   * attention: 直接调用时，将 h 和 row 元数据封装在 extra 内进行传递
-   * case type is 'list', list as metadata for loop, {value, label, color}
-   */
-  let {
+export function CellRender (
+  target,
+  type,
+  callback,
+  {
     style,
     label,
     icon,
@@ -20,9 +20,16 @@ export function CellRender (target, type, callback, extra) {
     h,
     row,
     list,
+    separator,
     confirmCallbak,
-    cancelCallBack
-  } = extra
+    cancelCallBack,
+    timeFormat = "YYYY-MM-DD HH:mm:ss"
+  }
+) {
+  /**
+   * attention: 直接调用时，将 h 和 row 元数据封装在 extra 内进行传递
+   * case type is 'list', list as metadata for loop, {value, label, color}
+   */
   // 判断是否在 extra 内，如果没有，则在 arguments 内获取 h
   if (!h) {
     h = [...arguments].slice(-2, -1)[0]
@@ -32,6 +39,27 @@ export function CellRender (target, type, callback, extra) {
   }
   let tpl = ""
   switch (type) {
+    case "number":
+      const num = String(row[target]).replace(
+        /\B(?=(\d{3})+(?!\d))/g,
+        separator ? separator : ","
+      )
+      tpl = <b style="font-size: 12px;">{num}</b>
+      break
+    case "datetime":
+      tpl = (
+        <span>
+          {row[target] ? moment(row[target]).format(timeFormat) : "-"}
+        </span>
+      )
+      break
+    case "timestamp":
+      tpl = (
+        <span>
+          {row[target] ? moment.unix(row[target]).format(timeFormat) : "-"}
+        </span>
+      )
+      break
     case "btn":
       tpl = (
         <a-button
@@ -132,4 +160,20 @@ export function CellRender (target, type, callback, extra) {
       break
   }
   return tpl
+}
+
+// 生成唯一标识
+export function generateUUID () {
+  let d = Number(new Date())
+  if (window.performance && typeof window.performance.now === "function") {
+    d += performance.now()
+  }
+  let uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (
+    c
+  ) {
+    let r = (d + Math.random() * 16) % 16 | 0
+    d = Math.floor(d / 16)
+    return (c == "x" ? r : (r & 0x3) | 0x8).toString(16)
+  })
+  return uuid
 }
